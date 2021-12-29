@@ -41,7 +41,7 @@ class CriaLista extends StatelessWidget {
       children: <Widget>[
         Criacard(Acao('LREN3', 29.50, 200, 20.05)),
         Criacard(Acao('MGLU3', 6.50, 2200, 20.05)),
-        Criacard(Acao('BIDI11', 29.50,a 180, 35.05)),
+        Criacard(Acao('BIDI11', 29.50, 180, 35.05)),
         Criacard(Acao('WEGE3', 17.50, 300, 35.05)),
       ],
     );
