@@ -11,7 +11,6 @@ class MyApp extends StatelessWidget {
   final TextEditingController _controllerCompanhia = TextEditingController();
   final TextEditingController _controllerCotacao = TextEditingController();
 
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -20,76 +19,100 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(title: const Text('Formulário')),
         body: Column(
           children: <Widget>[
-            Padding( // adiciona margens personalizaveis;
-              padding: const EdgeInsets.all(12.0), //EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 16), poderia ser assim também,
-              child: TextField(
-                controller: _controllerTicker,
-                style: const TextStyle(fontSize: 16.0),
-                decoration: const InputDecoration( //Decora o espaço que receberá o texto;
-                  labelText: "Ticker",
-                  hintText: 'ABCD3',
-                ),
-                keyboardType: TextInputType.text,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: TextField(
-                controller: _controllerCompanhia,
-                style: const TextStyle(fontSize: 16.0),
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(), //Adiciona bordas ao TextField;
-                  labelText: "Companhia" ,
-                  hintText: 'Empresa tal',
-                  icon: Icon(Icons.inventory_outlined), // Adiciona Ícone;
-                ),
-                keyboardType: TextInputType.text,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: TextField(
-                controller: _controllerCotacao,
-                style: const TextStyle(fontSize: 16.0),
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Cotação",
-                  hintText: '0.00',
-                  icon: Icon(Icons.monetization_on),
-                ),
-                keyboardType: TextInputType.text,
-              ),
-            ),
+            // A atribuição de criar textField foi passado para a função abaixo;
+            // Os itens passados por referências são parâmetros opcionais;
+            CriaCampo(
+                controlador: _controllerTicker,
+                rotulo: 'Ticker',
+                dica: 'ABCD3'),
+            CriaCampo(
+              controlador: _controllerCompanhia,
+              rotulo: 'Companhia',
+              dica: 'Empresa Tal',
+              borda: OutlineInputBorder(),
+              icone: Icons.inventory_outlined,
+              tipo: TextInputType.text,),
+            CriaCampo(
+              controlador: _controllerCotacao,
+              rotulo: 'Cotação',
+              dica: '0.00',
+              borda: OutlineInputBorder(),
+              icone: Icons.monetization_on,
+              tipo: TextInputType.number,),
             ElevatedButton(
-                onPressed: (){
-                  final String? ticket = _controllerTicker.text;
-                  final String? companhia = _controllerCompanhia.text;
-                  final double? cotacao = double.tryParse(_controllerCotacao.text);
-
-                  if (ticket!= null && companhia!= null && cotacao!= null){
-                    final Ativo novoAtivo = Ativo(ticket, companhia, cotacao);
-                    // O Intellij sugeriu da forma abaixo ao invés de usar o IF;
-                    //  final Ativo novoAtivo = Ativo(ticket!, companhia!, cotacao!);
-                  debugPrint("$novoAtivo");
-                  } else {
-                    debugPrint('Erro no preenchimento, favor refazer');
-                  }
-                },
-                child: const Text('Confirma', style: TextStyle(color: Colors.white)),
+              onPressed: () {
+                _CriaAtivo();
+              },
+              child:
+                  const Text('Confirma', style: TextStyle(color: Colors.white)),
               style: ButtonStyle(
-                backgroundColor: //Mudando a cor de fundo do butão;
-                MaterialStateProperty.all<Color>(Colors.deepOrange)),
-
+                  backgroundColor: //Mudando a cor de fundo do butão;
+                      MaterialStateProperty.all<Color>(Colors.deepOrange)),
             ),
           ],
         ),
       ),
+    );
+  }
 
+  void _CriaAtivo() {
+    final String? ticket = _controllerTicker.text;
+    final String? companhia = _controllerCompanhia.text;
+    final double? cotacao =
+        double.tryParse(_controllerCotacao.text);
+    
+    if (ticket != null && companhia != null && cotacao != null) {
+      final Ativo novoAtivo = Ativo(ticket, companhia, cotacao);
+      // O Intellij sugeriu da forma abaixo ao invés de usar o IF;
+      //  final Ativo novoAtivo = Ativo(ticket!, companhia!, cotacao!);
+      debugPrint("$novoAtivo");
+    } else {
+      debugPrint('Erro no preenchimento, favor refazer');
+    }
+  }
+}
+
+class CriaCampo extends StatelessWidget {
+  final TextEditingController controlador;
+  final String rotulo;
+  final String dica;
+  final OutlineInputBorder? borda;
+  final IconData? icone;
+  final TextInputType? tipo;
+
+  CriaCampo(
+      {required this.controlador,
+      required this.rotulo,
+      required this.dica,
+      this.borda,
+      this.icone,
+      this.tipo});
+
+    // Os campos não utilizados não estão sendo passados por referência,
+  // Estão como parametros opcionais.
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      // adiciona margens personalizaveis;
+      padding: const EdgeInsets.all(
+          12.0), //EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 16), poderia ser assim também,
+      child: TextField(
+        controller: controlador,
+        style: const TextStyle(fontSize: 16.0),
+        decoration: InputDecoration(
+          //Decora o espaço que receberá o texto;
+          labelText: rotulo,
+          hintText: dica,
+          icon: icone != null ? Icon(icone) : null,
+          border: borda != null ? OutlineInputBorder() : null,
+        ),
+        keyboardType: tipo,
+      ),
     );
   }
 }
 
-class Ativo{
+class Ativo {
   final String ticket;
   final String companhia;
   final double cotacao;
