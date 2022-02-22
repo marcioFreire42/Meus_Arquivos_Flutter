@@ -34,6 +34,11 @@ class Album {
       // Se não houvesse slip apneas advice, chamariamos apenas este no json;
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'advice' : title,
+  };
+  // Para criar JSON a partir do objeto;
 }
 
 void main() => runApp(const MyApp());
