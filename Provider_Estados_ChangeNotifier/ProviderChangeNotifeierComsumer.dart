@@ -1,3 +1,5 @@
+// Primerio atualiza o pubspec.yaml com a dependência provider:
+
 // Provider, ChangeNotifierProvider e Consumer
 // No main fica assim:
 
