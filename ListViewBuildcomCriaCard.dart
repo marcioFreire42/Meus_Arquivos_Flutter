@@ -55,7 +55,12 @@ class CriaLista extends StatelessWidget {
 
     return ListView.builder(
       itemCount: listadeAcoes.length,
+      // Aqui você diz a quantedade de itens que será criado pelo ListViewBuilder,
+      // Se você está usando uma lista, o ideal é colocar o lista.length aqui
       itemBuilder: (BuildContext context, int index){
+        // No item builder você tem que passar o context e o index;
+        // O index é como um int contador que aumenta só
+        // Podemos usar ele para ficar passando pelos elementos do list 
         final acao = listadeAcoes[index];
         return Criacard(acao);
       },
